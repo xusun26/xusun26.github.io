@@ -1,0 +1,75 @@
+below is the essential C# code on structure regularization (SR), which is very simple -- just *randomly* decompose the training samples into mini-samples in the beginning of *every* training iteration.  
+ 
+other notes: 
+
+1) as described in the paper, the decomposition is based on *feature* vectors rather than original obsearvations -- i.e., "x" in the code is extracted feature vectors; for example, suppose you have 10 words in named entity recognition, then you have 10 feature vectors -- just apply the SR on the 10 feature vectors & forget the words; this is important to avoid feature loss
+
+2) Although it's not required by SR, (for better accuracy) it is usually recommended to use *rich* edge features, see [Sun et al. ACL 2012] paper or the CRF-ADF toolkit for the details of rich edge features -- it is simple & typically can bring significant improvement on accuracy. Also, it's easy to avoid feature explosion even when the tag set is big: only generate rich edge features for (e.g., 10%) high frequency features. 
+				
+		
+		
+        //training with SR
+        public void train_SR(dataSet X)
+        {
+            for(int i=0; i< numIteration; i++)
+            {
+                dataSet X2= structReg_random(X);
+                train_oneIteration(X2);
+            }
+        }
+		
+		
+        //SR -- generate mini-samples
+        public dataSet structReg_random(dataSet X)
+        {
+            dataSet X2 = new dataSet();
+            for (int t = 0; t < X.Count; t++)
+            {
+                sample x = X[t];
+                getMiniSamples(x, X2);
+            }
+            return X2;
+        }
+
+        public void getMiniSamples(sample x, dataSet X2)
+        {
+            int rand = randomTool.getOneRandom_int(-100, 100);
+            if (rand <= 0)//forward-decompose
+            {
+                for (int node = 0; node < x.Count; )
+                {
+                    int size = getMiniSize();
+                    sample x2 = new sample(x, node, size);
+                    X2.Add(x2);
+                    node += size;
+                }
+            }
+            else//backward-decompose
+            {
+                for (int node = x.Count - 1; node >= 0; )
+                {
+                    int size = getMiniSize();
+                    sample x2 = new sample(x, node, size, false);
+                    X2.Add(x2);
+                    node -= size;
+                }
+            }
+        }
+
+        public int getMiniSize()
+        {
+            int miniSize;
+            if (Global.miniSize.ToString().Contains("."))//deal with real value case, e.g., Global.miniSize=2.5
+            {
+                int min = (int)Global.miniSize;
+                double boundary = (Global.miniSize * 1000) % 1000;
+                int rand = randomTool.getOneRandom_int(0, 1000);
+                if (rand < boundary)
+                    miniSize = min + 1;
+                else
+                    miniSize = min;
+            }
+            else
+                miniSize = (int)Global.miniSize;
+            return miniSize;
+        }
