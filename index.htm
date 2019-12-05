@@ -66,6 +66,33 @@ function copy(dest, source) {
 }
 </script>
 
+
+
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<script type="text/javascript">
+  function recordOutboundLink(link, category, action) {
+    _gat._getTrackerByName()._trackEvent(category, action);
+    setTimeout('document.location = "' + link.href + '"', 100);
+  }
+</script>
+
+
 </head>
 
 
@@ -81,7 +108,13 @@ function copy(dest, source) {
 <a href="http://lanco.pku.edu.cn/">Language Computing and Machine Learning Group</a>, <a href="http://eecs.pku.edu.cn/">Department of Computer Science</a>, 
 <a href="https://www.pku.edu.cn/">Peking University</a><br>
 
-Email：xusun (AT) pku.edu.cn
+Email：xusun (AT) pku.edu.cn  &nbsp;&nbsp;&nbsp;&nbsp; 
+<!-- <a class="twitter-follow-button"
+  href="https://twitter.com/xusun26"
+  data-show-count="false">
+Follow @xusun26</a>
+--> <img src="twitter.jpg" width="20" />Follow<a href ="https://twitter.com/intent/follow?ref_src=twsrc%5Etfw&screen_name=xusun26&tw_p=followbutton">@xusun26</a> &nbsp&nbsp&nbsp<img src="git_log.jpg" width="20" /><a href ="https://github.com/lancopku">Github</a>
+
 <p><b>Brief Bio</b>: Xu Sun is Tenured Associate Professor and PhD supervisor in Department of Computer Science, Peking University. He got Ph.D from The University of Tokyo (2010), advised by Prof. Jun'ichi Tsujii. From 2010 to 2012, he worked at The University of Tokyo, Cornell University, and The Hong Kong Polytechnic University as research fellows. He has been a research intern at MSR-Redmond in 2009. His research focuses on natural language processing and machine learning, especially on natural language generation and deep learning for language. He received COLING Best Paper Award 2018.</p>
 
 </td>
